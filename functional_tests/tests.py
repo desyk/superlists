@@ -3,6 +3,7 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import sys
+from pyvirtualdisplay import Display
 
 
 class NewVisitorTest(StaticLiveServerTestCase):
@@ -24,12 +25,15 @@ class NewVisitorTest(StaticLiveServerTestCase):
             super().tearDownClass()
 
     def setUp(self):
-        self.browser = webdriver.Chrome()
+        self.display = Display(visible=0, size=(1024, 768))
+        self.display.start()
+        self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
 
     def tearDown(self):
         # self.browser.refresh()
         self.browser.quit()
+        self.display.stop()
 
     def check_for_row_in_list_table(self, row_text):
         table = self.browser.find_element_by_id('id_list_table')
@@ -49,10 +53,10 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertIn('To-Do', self.browser.title)
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('To-Do', header_text)
-        
+
         # She is invited to enter a to-do item straight away
         inputbox = self.browser.find_element_by_id('id_new_item')
-        self.assertEqual(inputbox.get_attribute('placeholder'), 
+        self.assertEqual(inputbox.get_attribute('placeholder'),
                          'Enter a to-do item')
 
         # She types "Buy peacock feathers" into a text box (Edith's hobby
@@ -81,7 +85,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         ## We use a new browser session to make sure that no information
         ## of Edith's is coming through from cookies etc
         self.browser.quit()
-        self.browser = webdriver.Chrome()
+        self.browser = webdriver.Firefox()
 
         # Francis visits the home page.  There is no sign of Edith's
         # list

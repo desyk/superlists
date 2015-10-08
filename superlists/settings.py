@@ -23,10 +23,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'm)y148o7u9n8*^1nweo&e@!^ur*52t5s&fex@32q@b@t=v)_wy'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['tack.pythonanywhere.com']
 
+# # For local machine uncomment:
+# DEBUG = True
+# ALLOWED_HOSTS = []
 
 # Application definition
 
